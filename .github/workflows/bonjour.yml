@@ -4,7 +4,9 @@ on:
 jobs:
   dire_bonjour:
     runs-on: ubuntu-22.04
+    env:
+      IMAGE_NAME: ci-node:latest
     steps:
       - uses: actions/checkout@v3 # Récupère le contenu du dépôt correspondant au commit du workflow en cours
-      - run: docker image build --tag=ci-node:latest ./
-      - run: docker run --rm ci-node:latest npm run lint
+      - run: docker image build --tag="${IMAGE_NAME}" ./
+      - run: docker run --rm --workdir="$(pwd)" --volume="$(pwd)":"$(pwd)" ${IMAGE_NAME}" npm run lint
